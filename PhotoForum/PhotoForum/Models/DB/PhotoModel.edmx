@@ -1,0 +1,253 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="PHOTO_FORUMModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="IMG">
+          <Key>
+            <PropertyRef Name="IMG_ID" />
+          </Key>
+          <Property Name="IMG_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="USERNAME" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="UPLOAD_DATE" Type="datetime" Nullable="false" />
+          <Property Name="IMG_NAME" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="STATUS" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PHOTO_USER">
+          <Key>
+            <PropertyRef Name="USERNAME" />
+          </Key>
+          <Property Name="USERNAME" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="PASSWORD" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="EMAIL" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="STATUS" Type="bit" Nullable="false" />
+          <Property Name="ROLE" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="IMG" Type="varchar" MaxLength="250" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TAG">
+          <Key>
+            <PropertyRef Name="TAG_NAME" />
+          </Key>
+          <Property Name="TAG_NAME" Type="varchar" MaxLength="250" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TAG_IMG">
+          <Key>
+            <PropertyRef Name="IMG_ID" />
+            <PropertyRef Name="TAG_NAME" />
+          </Key>
+          <Property Name="IMG_ID" Type="int" Nullable="false" />
+          <Property Name="TAG_NAME" Type="varchar" MaxLength="250" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_IMG_USER">
+          <End Role="PHOTO_USER" Type="Self.PHOTO_USER" Multiplicity="1" />
+          <End Role="IMG" Type="Self.IMG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PHOTO_USER">
+              <PropertyRef Name="USERNAME" />
+            </Principal>
+            <Dependent Role="IMG">
+              <PropertyRef Name="USERNAME" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TAG_IMG">
+          <End Role="IMG" Type="Self.IMG" Multiplicity="1" />
+          <End Role="TAG_IMG" Type="Self.TAG_IMG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IMG">
+              <PropertyRef Name="IMG_ID" />
+            </Principal>
+            <Dependent Role="TAG_IMG">
+              <PropertyRef Name="IMG_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TAG_TAG">
+          <End Role="TAG" Type="Self.TAG" Multiplicity="1" />
+          <End Role="TAG_IMG" Type="Self.TAG_IMG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TAG">
+              <PropertyRef Name="TAG_NAME" />
+            </Principal>
+            <Dependent Role="TAG_IMG">
+              <PropertyRef Name="TAG_NAME" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="SELECT_NEWEST_IMG" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="USERNAME" Type="nvarchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="PHOTO_FORUMModelStoreContainer">
+          <EntitySet Name="IMG" EntityType="Self.IMG" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PHOTO_USER" EntityType="Self.PHOTO_USER" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TAG" EntityType="Self.TAG" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TAG_IMG" EntityType="Self.TAG_IMG" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_IMG_USER" Association="Self.FK_IMG_USER">
+            <End Role="PHOTO_USER" EntitySet="PHOTO_USER" />
+            <End Role="IMG" EntitySet="IMG" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TAG_IMG" Association="Self.FK_TAG_IMG">
+            <End Role="IMG" EntitySet="IMG" />
+            <End Role="TAG_IMG" EntitySet="TAG_IMG" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TAG_TAG" Association="Self.FK_TAG_TAG">
+            <End Role="TAG" EntitySet="TAG" />
+            <End Role="TAG_IMG" EntitySet="TAG_IMG" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PHOTO_FORUMModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="IMG">
+          <Key>
+            <PropertyRef Name="IMG_ID" />
+          </Key>
+          <Property Name="IMG_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="USERNAME" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UPLOAD_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IMG_NAME" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="STATUS" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="PHOTO_USER" Relationship="Self.FK_IMG_USER" FromRole="IMG" ToRole="PHOTO_USER" />
+          <NavigationProperty Name="TAGs" Relationship="Self.TAG_IMG" FromRole="IMG" ToRole="TAG" />
+        </EntityType>
+        <EntityType Name="PHOTO_USER">
+          <Key>
+            <PropertyRef Name="USERNAME" />
+          </Key>
+          <Property Name="USERNAME" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PASSWORD" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EMAIL" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="STATUS" Type="Boolean" Nullable="false" />
+          <Property Name="ROLE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IMG" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="IMGs" Relationship="Self.FK_IMG_USER" FromRole="PHOTO_USER" ToRole="IMG" />
+        </EntityType>
+        <EntityType Name="TAG">
+          <Key>
+            <PropertyRef Name="TAG_NAME" />
+          </Key>
+          <Property Name="TAG_NAME" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="IMGs" Relationship="Self.TAG_IMG" FromRole="TAG" ToRole="IMG" />
+        </EntityType>
+        <Association Name="FK_IMG_USER">
+          <End Role="PHOTO_USER" Type="Self.PHOTO_USER" Multiplicity="1" />
+          <End Role="IMG" Type="Self.IMG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PHOTO_USER">
+              <PropertyRef Name="USERNAME" />
+            </Principal>
+            <Dependent Role="IMG">
+              <PropertyRef Name="USERNAME" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="TAG_IMG">
+          <End Role="IMG" Type="Self.IMG" Multiplicity="*" />
+          <End Role="TAG" Type="Self.TAG" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="PHOTO_FORUMEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="IMGs" EntityType="Self.IMG" />
+          <EntitySet Name="PHOTO_USER" EntityType="Self.PHOTO_USER" />
+          <EntitySet Name="TAGs" EntityType="Self.TAG" />
+          <AssociationSet Name="FK_IMG_USER" Association="Self.FK_IMG_USER">
+            <End Role="PHOTO_USER" EntitySet="PHOTO_USER" />
+            <End Role="IMG" EntitySet="IMGs" />
+          </AssociationSet>
+          <AssociationSet Name="TAG_IMG" Association="Self.TAG_IMG">
+            <End Role="IMG" EntitySet="IMGs" />
+            <End Role="TAG" EntitySet="TAGs" />
+          </AssociationSet>
+          <FunctionImport Name="SELECT_NEWEST_IMG" ReturnType="Collection(PHOTO_FORUMModel.SELECT_NEWEST_IMG_Result)">
+            <Parameter Name="USERNAME" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="SELECT_NEWEST_IMG_Result">
+          <Property Type="Int32" Name="IMG_ID" Nullable="false" />
+          <Property Type="String" Name="USERNAME" Nullable="false" MaxLength="250" />
+          <Property Type="DateTime" Name="UPLOAD_DATE" Nullable="false" Precision="23" />
+          <Property Type="String" Name="IMG_NAME" Nullable="false" MaxLength="250" />
+          <Property Type="String" Name="STATUS" Nullable="false" MaxLength="20" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PHOTO_FORUMModelStoreContainer" CdmEntityContainer="PHOTO_FORUMEntities">
+          <EntitySetMapping Name="IMGs">
+            <EntityTypeMapping TypeName="PHOTO_FORUMModel.IMG">
+              <MappingFragment StoreEntitySet="IMG">
+                <ScalarProperty Name="IMG_ID" ColumnName="IMG_ID" />
+                <ScalarProperty Name="USERNAME" ColumnName="USERNAME" />
+                <ScalarProperty Name="UPLOAD_DATE" ColumnName="UPLOAD_DATE" />
+                <ScalarProperty Name="IMG_NAME" ColumnName="IMG_NAME" />
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PHOTO_USER">
+            <EntityTypeMapping TypeName="PHOTO_FORUMModel.PHOTO_USER">
+              <MappingFragment StoreEntitySet="PHOTO_USER">
+                <ScalarProperty Name="USERNAME" ColumnName="USERNAME" />
+                <ScalarProperty Name="PASSWORD" ColumnName="PASSWORD" />
+                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+                <ScalarProperty Name="ROLE" ColumnName="ROLE" />
+                <ScalarProperty Name="IMG" ColumnName="IMG" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TAGs">
+            <EntityTypeMapping TypeName="PHOTO_FORUMModel.TAG">
+              <MappingFragment StoreEntitySet="TAG">
+                <ScalarProperty Name="TAG_NAME" ColumnName="TAG_NAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="TAG_IMG" TypeName="PHOTO_FORUMModel.TAG_IMG" StoreEntitySet="TAG_IMG">
+            <EndProperty Name="IMG">
+              <ScalarProperty Name="IMG_ID" ColumnName="IMG_ID" />
+            </EndProperty>
+            <EndProperty Name="TAG">
+              <ScalarProperty Name="TAG_NAME" ColumnName="TAG_NAME" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="SELECT_NEWEST_IMG" FunctionName="PHOTO_FORUMModel.Store.SELECT_NEWEST_IMG">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PHOTO_FORUMModel.SELECT_NEWEST_IMG_Result">
+                <ScalarProperty Name="IMG_ID" ColumnName="IMG_ID" />
+                <ScalarProperty Name="USERNAME" ColumnName="USERNAME" />
+                <ScalarProperty Name="UPLOAD_DATE" ColumnName="UPLOAD_DATE" />
+                <ScalarProperty Name="IMG_NAME" ColumnName="IMG_NAME" />
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
