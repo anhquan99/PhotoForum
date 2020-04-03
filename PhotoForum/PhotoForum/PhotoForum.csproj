@@ -173,6 +173,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\DB\FIND_IMG_WITH_TAG_Result.cs">
+      <DependentUpon>PhotoModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\DB\IMG.cs">
       <DependentUpon>PhotoModel.tt</DependentUpon>
     </Compile>

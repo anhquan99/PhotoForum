@@ -1,4 +1,4 @@
-﻿@{
+﻿@*@{
     ViewBag.Title = "UploadFile";
 }
 
@@ -20,4 +20,8 @@
     </div>
 
 
+}*@
+@foreach(var i in ViewBag.data)
+{
+    <p>@i.IMG_ID</p>
 }

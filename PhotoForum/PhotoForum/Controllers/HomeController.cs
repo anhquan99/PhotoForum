@@ -15,25 +15,22 @@ namespace PhotoForum.Controllers
     {
         public ActionResult Index()
         {
-           
-
-            //ViewBag.Title = "Home Page";
-
             return View();
         }
         [HttpPost]
         public ActionResult Index(HttpPostedFileBase file)
         {
-            IMG img = new IMG()
-            {
-                USERNAME = "testCommand",
-                STATUS = "public"
-            };
-            List<String> tags = new List<string>();
-            tags.Add("tag1");
-            tags.Add("tag5");
+            //IMG img = new IMG()
+            //{
+            //    USERNAME = "testCommand",
+            //    STATUS = "public"
+            //};
+            //List<String> tags = new List<string>();
+            //tags.Add("tag1");
+            //tags.Add("tag5");
 
-            Command.executeUploadImg(img, file, tags);
+            //Command.executeUploadImg(img, file, tags);
+            //Command.executeDeleteImg(30);
             return View();
         }
     }

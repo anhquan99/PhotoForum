@@ -25,9 +25,9 @@ namespace PhotoForum.Service.ModelService
                     return true;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new ModelErrorException("ERROR: CREATING TAG AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString());
+                throw new ModelErrorException("ERROR: CREATING TAG AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString(), ex);
             }
         }
         /// <summary>
@@ -54,9 +54,9 @@ namespace PhotoForum.Service.ModelService
                     return true;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new ModelErrorException("ERROR: DELETING TAG AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString());
+                throw new ModelErrorException("ERROR: DELETING TAG AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString(), ex);
             }
         }
         /// <summary>
@@ -72,9 +72,9 @@ namespace PhotoForum.Service.ModelService
                     return (from p in db.TAGs select p).ToList();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new ModelErrorException("ERROR: READING TAG AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString());
+                throw new ModelErrorException("ERROR: READING TAG AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString(), ex);
             }
         }
         /// <summary>
@@ -95,9 +95,9 @@ namespace PhotoForum.Service.ModelService
                     return selectedTag;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new ModelErrorException();
+                throw new ModelErrorException("" ,ex);
             }
         }
         /// <summary>

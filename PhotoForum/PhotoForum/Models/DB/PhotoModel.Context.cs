@@ -31,6 +31,15 @@ namespace PhotoForum.Models.DB
         public virtual DbSet<PHOTO_USER> PHOTO_USER { get; set; }
         public virtual DbSet<TAG> TAGs { get; set; }
     
+        public virtual ObjectResult<FIND_IMG_WITH_TAG_Result> FIND_IMG_WITH_TAG(string tAG_NAME)
+        {
+            var tAG_NAMEParameter = tAG_NAME != null ?
+                new ObjectParameter("TAG_NAME", tAG_NAME) :
+                new ObjectParameter("TAG_NAME", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<FIND_IMG_WITH_TAG_Result>("FIND_IMG_WITH_TAG", tAG_NAMEParameter);
+        }
+    
         public virtual ObjectResult<SELECT_NEWEST_IMG_Result> SELECT_NEWEST_IMG(string uSERNAME)
         {
             var uSERNAMEParameter = uSERNAME != null ?

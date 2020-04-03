@@ -20,6 +20,8 @@ namespace PhotoForum.Service
         private static String dateTimeFormat = "yyyy-MM-ddTHH-mm-ss";
         /// <summary>
         /// handle upload img of the user avatar when register
+        /// 
+        /// đăng kí trong github
         /// </summary>
         /// <param name="user"></param>
         /// <param name="file"></param>
@@ -53,6 +55,8 @@ namespace PhotoForum.Service
         }
         /// <summary>
         /// handle upload img
+        /// 
+        /// thêm ảnh trong github
         /// </summary>
         /// <param name="img"></param>
         /// <param name="file"></param>
@@ -102,23 +106,30 @@ namespace PhotoForum.Service
             }
         }
         /// <summary>
-        /// 
+        /// handle delete img when error happend and back up old img
+        /// xóa hình trong github
         /// </summary>
         /// <param name="img"></param>
-        public static String executeDeleteImg(IMG img)
+        public static String executeDeleteImg(int imgId)
         {
             PhotoService photoService = new PhotoService();
             UploadService uploadService = new UploadService();
+            IMG img = photoService.findById(imgId.ToString());
+            //get old tag if error happend
+            List<String> oldTags = photoService.getTagFormImg(imgId);
             try
             {
-                //tags?
-                photoService.deleteById(img.IMG_ID.ToString());
+                
+                photoService.deleteById(imgId.ToString());
                 uploadService.unDoUpload(img.IMG_NAME);
                 return success;
             }
             catch (ImgErrorException ex)
             {
                 photoService.create(img);
+                int newId = photoService.findNewestImgIdOfUser(img.USERNAME);
+                img = photoService.findById(img.IMG_ID.ToString());
+                photoService.updateTags(img, oldTags);
                 Console.WriteLine(ex.Message);
                 return failed;
             }
@@ -128,5 +139,66 @@ namespace PhotoForum.Service
                 return failed;
             }
         }
+        /// <summary>
+        /// update img only for tags and status
+        /// 
+        /// update hình trong github
+        /// </summary>
+        /// <param name="img"></param>
+        /// <param name="tags"></param>
+        /// <returns></returns>
+        public static String executeUpdateImg(IMG img, List<String> tags)
+        {
+            PhotoService photoService = new PhotoService();
+            UploadService uploadService = new UploadService();
+            try
+            {
+
+                photoService.update(img);
+                photoService.updateTags(img, tags);
+                return success;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return failed;
+            }
+        }
+        /// <summary>
+        /// handle udpate img of the user avatar when udpate
+        /// 
+        /// update user trong github
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="file"></param>
+        public static String executeUpdateUser(PHOTO_USER user, HttpPostedFileBase file)
+        {
+            UserService userService = new UserService();
+            UploadService uploadService = new UploadService();
+            user.IMG = user.USERNAME + DateTime.Now.ToString(dateTimeFormat) + Path.GetExtension(file.FileName);
+            try
+            {
+                uploadService.upload(file, user.IMG);
+                userService.update(user);
+                return success;
+            }
+            catch (ImgErrorException ex)
+            {
+                Console.WriteLine(ex.Message);
+                return failed;
+            }
+            catch (ModelErrorException ex)
+            {
+                uploadService.unDoUpload(user.IMG);
+                Console.WriteLine(ex.Message);
+                return failed;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return failed;
+            }
+        }
+
     }
 }

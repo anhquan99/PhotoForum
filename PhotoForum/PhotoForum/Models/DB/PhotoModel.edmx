@@ -53,7 +53,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_TAG_IMG">
-          <End Role="IMG" Type="Self.IMG" Multiplicity="1" />
+          <End Role="IMG" Type="Self.IMG" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="TAG_IMG" Type="Self.TAG_IMG" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="IMG">
@@ -65,7 +67,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_TAG_TAG">
-          <End Role="TAG" Type="Self.TAG" Multiplicity="1" />
+          <End Role="TAG" Type="Self.TAG" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="TAG_IMG" Type="Self.TAG_IMG" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="TAG">
@@ -76,6 +80,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="FIND_IMG_WITH_TAG" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TAG_NAME" Type="nvarchar" Mode="In" />
+        </Function>
         <Function Name="SELECT_NEWEST_IMG" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="USERNAME" Type="nvarchar" Mode="In" />
         </Function>
@@ -161,10 +168,17 @@
             <End Role="IMG" EntitySet="IMGs" />
             <End Role="TAG" EntitySet="TAGs" />
           </AssociationSet>
+          <FunctionImport Name="FIND_IMG_WITH_TAG" ReturnType="Collection(PHOTO_FORUMModel.FIND_IMG_WITH_TAG_Result)">
+            <Parameter Name="TAG_NAME" Mode="In" Type="String" />
+          </FunctionImport>
           <FunctionImport Name="SELECT_NEWEST_IMG" ReturnType="Collection(PHOTO_FORUMModel.SELECT_NEWEST_IMG_Result)">
             <Parameter Name="USERNAME" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
+        <ComplexType Name="FIND_IMG_WITH_TAG_Result">
+          <Property Type="Int32" Name="IMG_ID" Nullable="false" />
+          <Property Type="String" Name="TAG_NAME" Nullable="false" MaxLength="250" />
+        </ComplexType>
         <ComplexType Name="SELECT_NEWEST_IMG_Result">
           <Property Type="Int32" Name="IMG_ID" Nullable="false" />
           <Property Type="String" Name="USERNAME" Nullable="false" MaxLength="250" />
@@ -216,6 +230,14 @@
               <ScalarProperty Name="TAG_NAME" ColumnName="TAG_NAME" />
             </EndProperty>
           </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="FIND_IMG_WITH_TAG" FunctionName="PHOTO_FORUMModel.Store.FIND_IMG_WITH_TAG">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PHOTO_FORUMModel.FIND_IMG_WITH_TAG_Result">
+                <ScalarProperty Name="IMG_ID" ColumnName="IMG_ID" />
+                <ScalarProperty Name="TAG_NAME" ColumnName="TAG_NAME" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="SELECT_NEWEST_IMG" FunctionName="PHOTO_FORUMModel.Store.SELECT_NEWEST_IMG">
             <ResultMapping>
               <ComplexTypeMapping TypeName="PHOTO_FORUMModel.SELECT_NEWEST_IMG_Result">

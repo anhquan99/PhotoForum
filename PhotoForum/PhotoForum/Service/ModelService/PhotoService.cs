@@ -25,9 +25,9 @@ namespace PhotoForum.Service.ModelService
                     return true;
                 }
             }
-            catch (Exception)
+            catch (Exception ex) 
             {
-                throw new ModelErrorException("ERROR: CREATING IMG AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString());
+                throw new ModelErrorException("ERROR: CREATING IMG AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString(), ex);
             }
         }
         /// <summary>
@@ -57,7 +57,7 @@ namespace PhotoForum.Service.ModelService
             }
             catch (Exception ex)
             {
-                throw new ModelErrorException("ERROR: DELETING IMG AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString());
+                throw new ModelErrorException("ERROR: DELETING IMG AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString(), ex);
             }
         }
         /// <summary>
@@ -73,9 +73,9 @@ namespace PhotoForum.Service.ModelService
                     return (from p in db.IMGs select p).ToList();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new ModelErrorException("ERROR: READING IMG AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString());
+                throw new ModelErrorException("ERROR: READING IMG AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString(), ex);
             }
         }
         /// <summary>
@@ -97,13 +97,13 @@ namespace PhotoForum.Service.ModelService
                     return selectedIMG;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new ModelErrorException();
+                throw new ModelErrorException("" , ex);
             }
         }
         /// <summary>
-        /// update img
+        /// update img not tags
         /// </summary>
         /// <param name="t"></param>
         /// <returns></returns>
@@ -122,15 +122,15 @@ namespace PhotoForum.Service.ModelService
                         selectedIMG.IMG_NAME = t.IMG_NAME;
                         selectedIMG.STATUS = t.STATUS;
                         selectedIMG.UPLOAD_DATE = t.UPLOAD_DATE;
-                        if (db.SaveChanges() == 0) throw new Exception();
+                        if (db.SaveChanges() == 0) return false;
+                        return true;
                     }
                     else throw new ModelErrorException("ERROR: IMG NOT FOUND");
-                    return true;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new ModelErrorException("ERROR: DELETING IMG AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString());
+                throw new ModelErrorException("ERROR: DELETING IMG AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString(), ex);
             }
         }
         /// <summary>
@@ -156,11 +156,17 @@ namespace PhotoForum.Service.ModelService
                     return result;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new ModelErrorException("ERROR: GETTING IMG AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString());
+                throw new ModelErrorException("ERROR: GETTING IMG AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString(), ex);
             }
         }
+        /// <summary>
+        /// update tags
+        /// </summary>
+        /// <param name="img"></param>
+        /// <param name="tags"></param>
+        /// <returns></returns>
         public bool updateTags(IMG img , List<String> tags)
         {
             PHOTO_FORUMEntities db = new PHOTO_FORUMEntities();
@@ -168,7 +174,7 @@ namespace PhotoForum.Service.ModelService
                                where p.IMG_ID == img.IMG_ID
                                select p).SingleOrDefault();
             ICollection<TAG> oldTags = selectedImg.TAGs;
-            foreach (var i in img.TAGs)
+            foreach (var i in selectedImg.TAGs)
             {
                 selectedImg.TAGs.Remove(i);
             }
@@ -177,28 +183,87 @@ namespace PhotoForum.Service.ModelService
                 TagService service = new TagService();
                 foreach (var i in tags)
                 {
-                    var tag = service.findById(i);
+                    var tag = (from p in db.TAGs
+                               where p.TAG_NAME == i
+                               select p).SingleOrDefault();
                     if (tag == null)
                     {
                         TAG newTag = new TAG()
                         {
                             TAG_NAME = i
                         };
-                        service.create(tag);
+                        service.create(newTag);
+                        tag = (from p in db.TAGs
+                               where p.TAG_NAME == i
+                               select p).SingleOrDefault();
                     }
-                    img.TAGs.Add(tag);
+                    selectedImg.TAGs.Add(tag);
                 }
-                this.update(img);
+                if(db.SaveChanges() == 0) throw new Exception();
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             { 
                 foreach(var i in oldTags)
                 {
                     selectedImg.TAGs.Add(i);
                 }
-                this.update(selectedImg);
-                throw new ExecutionEngineException("ERROR: GETTING IMG AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString());
+                db.SaveChanges();
+                throw new ExecutionEngineException("ERROR: UPDATING IMG AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString(), ex);
+            }
+        }
+        /// <summary>
+        /// get all tags from img
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public List<String> getTagFormImg(int id)
+        {
+            try
+            {
+                List<String> tags = new List<string>();
+                using (PHOTO_FORUMEntities db = new PHOTO_FORUMEntities())
+                {
+                    var img = (from p in db.IMGs
+                               where p.IMG_ID == id
+                               select p).SingleOrDefault();
+                    if(img == null) throw new ModelErrorException("ERROR: GETTING TAG IMG AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString());
+                    foreach(var i in img.TAGs)
+                    {
+                        tags.Add(i.TAG_NAME);
+                    }
+                    return tags;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        /// <summary>
+        /// find img with tag
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <returns></returns>
+        public List<IMG> findByTag(String tag)
+        {
+            try
+            {
+                using (PHOTO_FORUMEntities db = new PHOTO_FORUMEntities())
+                {
+                    List<IMG> list = new List<IMG>();
+                    foreach (var i in db.FIND_IMG_WITH_TAG(tag))
+                    {
+                        IMG img = this.findById(i.IMG_ID.ToString());
+                        list.Add(img);
+                    }
+                    return list;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new ModelErrorException("ERROR: GETTING IMG BY TAG AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString(), ex);
             }
         }
 

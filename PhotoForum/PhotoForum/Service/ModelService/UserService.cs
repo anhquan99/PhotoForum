@@ -25,9 +25,9 @@ namespace PhotoForum.Service.ModelService
                     return true;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new ModelErrorException("ERROR: CREATING USER AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString()); ;
+                throw new ModelErrorException("ERROR: CREATING USER AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString(), ex); ;
             }
         }
         /// <summary>
@@ -54,9 +54,9 @@ namespace PhotoForum.Service.ModelService
                     return true;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new ModelErrorException("ERROR: DELETING USER AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString());
+                throw new ModelErrorException("ERROR: DELETING USER AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString(), ex);
             }
         }
         /// <summary>
@@ -72,9 +72,9 @@ namespace PhotoForum.Service.ModelService
                     return (from p in db.PHOTO_USER select p).ToList();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new ModelErrorException("ERROR: READING USER AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString());
+                throw new ModelErrorException("ERROR: READING USER AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString(), ex);
             }
         }
         /// <summary>
@@ -120,16 +120,16 @@ namespace PhotoForum.Service.ModelService
                         selectedUser.PASSWORD = t.PASSWORD;
                         selectedUser.IMG = t.IMG;
                         selectedUser.EMAIL = t.EMAIL;
-                        selectedUser.ROLE = t.ROLE;
-                        if (db.SaveChanges() == 0) throw new Exception();
+                        selectedUser.STATUS = t.STATUS;
+                        if (db.SaveChanges() == 0) return false;
+                        return true;
                     }
                     else throw new ModelErrorException("ERROR: USER NOT FOUND");
-                    return true;
                 }
             }
             catch (Exception ex)
             {
-                throw new ModelErrorException("ERROR: DELETING USER AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString());
+                throw new ModelErrorException("ERROR: DELETING USER AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString(), ex);
             }
         }
         /// <summary>
@@ -152,9 +152,9 @@ namespace PhotoForum.Service.ModelService
                     return selectedUser;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new ModelErrorException();
+                throw new ModelErrorException("", ex);
             }
         }
     }
