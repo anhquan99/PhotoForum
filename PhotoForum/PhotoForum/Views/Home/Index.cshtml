@@ -1,2 +1,23 @@
-﻿<p>Home</p>
-<p>@ViewBag.data</p>
+﻿@{
+    ViewBag.Title = "UploadFile";
+}
+
+<h2>UploadFile</h2>
+@if (ViewBag.data != null)
+{
+    <p>@ViewBag.data</p>
+}
+@using (Html.BeginForm("Index", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <div>
+        @Html.TextBox("file", "", new { type = "file" }) <br />
+
+        <input type="submit" value="Upload" />
+
+        @ViewBag.Message
+
+    </div>
+
+
+}

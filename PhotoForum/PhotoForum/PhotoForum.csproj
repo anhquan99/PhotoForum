@@ -45,10 +45,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -161,10 +168,46 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="CustomException\ImgErrorException.cs" />
+    <Compile Include="CustomException\ModelErrorException.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\DB\IMG.cs">
+      <DependentUpon>PhotoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DB\PhotoModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PhotoModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DB\PhotoModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PhotoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DB\PhotoModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PhotoModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DB\PHOTO_USER.cs">
+      <DependentUpon>PhotoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DB\SELECT_NEWEST_IMG_Result.cs">
+      <DependentUpon>PhotoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DB\TAG.cs">
+      <DependentUpon>PhotoModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\ActionService\AccessService.cs" />
+    <Compile Include="Service\Command.cs" />
+    <Compile Include="Service\ModelService\IService.cs" />
+    <Compile Include="Service\ModelService\PhotoService.cs" />
+    <Compile Include="Service\ModelService\TagService.cs" />
+    <Compile Include="Service\ActionService\UploadService.cs" />
+    <Compile Include="Service\ModelService\UserService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
@@ -175,6 +218,16 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Models\DB\PhotoModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>PhotoModel.edmx</DependentUpon>
+      <LastGenOutput>PhotoModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\DB\PhotoModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>PhotoModel.edmx</DependentUpon>
+      <LastGenOutput>PhotoModel.cs</LastGenOutput>
+    </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
@@ -196,6 +249,13 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
+    <EntityDeploy Include="Models\DB\PhotoModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>PhotoModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\DB\PhotoModel.edmx.diagram">
+      <DependentUpon>PhotoModel.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -220,7 +280,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\DataView\" />
-    <Folder Include="Models\DB\" />
     <Folder Include="Views\Admin\" />
     <Folder Include="Views\Authentication\" />
     <Folder Include="Views\User\" />
@@ -253,6 +312,9 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

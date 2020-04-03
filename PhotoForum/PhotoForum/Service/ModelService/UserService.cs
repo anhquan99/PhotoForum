@@ -21,13 +21,13 @@ namespace PhotoForum.Service.ModelService
                 using (PHOTO_FORUMEntities db = new PHOTO_FORUMEntities())
                 {
                     db.PHOTO_USER.Add(t);
-                    if (db.SaveChanges() == 0) throw new ModelErrorException("ERROR: CREATING USER AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString());
+                    if (db.SaveChanges() == 0) throw new Exception();
                     return true;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw new ModelErrorException("ERROR: CREATING USER AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString()); ;
             }
         }
         /// <summary>
@@ -48,15 +48,15 @@ namespace PhotoForum.Service.ModelService
                     if (selectedUser != null)
                     {
                         db.PHOTO_USER.Remove(selectedUser);
-                        if (db.SaveChanges() == 0) throw new ModelErrorException("ERROR: DELETING USER AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString());
+                        if (db.SaveChanges() == 0) throw new Exception();
                     }
                     else throw new ModelErrorException("ERROR: USER NOT FOUND");
                     return true;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw new ModelErrorException("ERROR: DELETING USER AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString());
             }
         }
         /// <summary>
@@ -121,7 +121,7 @@ namespace PhotoForum.Service.ModelService
                         selectedUser.IMG = t.IMG;
                         selectedUser.EMAIL = t.EMAIL;
                         selectedUser.ROLE = t.ROLE;
-                        if (db.SaveChanges() == 0) throw new ModelErrorException("ERROR: DELETING USER AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString());
+                        if (db.SaveChanges() == 0) throw new Exception();
                     }
                     else throw new ModelErrorException("ERROR: USER NOT FOUND");
                     return true;
@@ -129,7 +129,7 @@ namespace PhotoForum.Service.ModelService
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new ModelErrorException("ERROR: DELETING USER AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString());
             }
         }
         /// <summary>

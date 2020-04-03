@@ -21,13 +21,13 @@ namespace PhotoForum.Service.ModelService
                 using (PHOTO_FORUMEntities db = new PHOTO_FORUMEntities())
                 {
                     db.IMGs.Add(t);
-                    if (db.SaveChanges() == 0) throw new ModelErrorException("ERROR: CREATING IMG AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString());
+                    if (db.SaveChanges() == 0) throw new Exception();
                     return true;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw new ModelErrorException("ERROR: CREATING IMG AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString());
             }
         }
         /// <summary>
@@ -49,7 +49,7 @@ namespace PhotoForum.Service.ModelService
                     if (selectedIMG != null)
                     {
                         db.IMGs.Remove(selectedIMG);
-                        if (db.SaveChanges() == 0) throw new ModelErrorException("ERROR: DELETING IMG AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString());
+                        if (db.SaveChanges() == 0) throw new Exception();
                     }
                     else throw new ModelErrorException("ERROR: USER NOT FOUND");
                     return true;
@@ -57,7 +57,7 @@ namespace PhotoForum.Service.ModelService
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new ModelErrorException("ERROR: DELETING IMG AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString());
             }
         }
         /// <summary>
@@ -122,15 +122,44 @@ namespace PhotoForum.Service.ModelService
                         selectedIMG.IMG_NAME = t.IMG_NAME;
                         selectedIMG.STATUS = t.STATUS;
                         selectedIMG.UPLOAD_DATE = t.UPLOAD_DATE;
-                        if (db.SaveChanges() == 0) throw new ModelErrorException("ERROR: DELETING IMG AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString());
+                        selectedIMG.TAGs = t.TAGs;
+                        if (db.SaveChanges() == 0) throw new Exception();
                     }
                     else throw new ModelErrorException("ERROR: IMG NOT FOUND");
                     return true;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw new ModelErrorException("ERROR: DELETING IMG AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString());
+            }
+        }
+        /// <summary>
+        /// get the newest uploaded of the user 
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        public int findNewestImgOfUser(String username)
+        {
+            try
+            {
+                using (PHOTO_FORUMEntities db = new PHOTO_FORUMEntities())
+                {
+                    int result = 0;
+                    foreach (var i in db.SELECT_NEWEST_IMG(username))
+                    {
+                        result = i.IMG_ID;
+                    }
+                    if(result == 0)
+                    {
+                        throw new ModelErrorException("ERROR: USERNAME NOT FOUND");
+                    }
+                    return result;
+                }
+            }
+            catch (Exception)
+            {
+                throw new ModelErrorException("ERROR: GETTING IMG AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString());
             }
         }
 

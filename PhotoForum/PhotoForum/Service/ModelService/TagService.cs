@@ -21,13 +21,13 @@ namespace PhotoForum.Service.ModelService
                 using (PHOTO_FORUMEntities db = new PHOTO_FORUMEntities())
                 {
                     db.TAGs.Add(t);
-                    if (db.SaveChanges() == 0) throw new ModelErrorException("ERROR: CREATING TAG AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString());
+                    if (db.SaveChanges() == 0) throw new Exception();
                     return true;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw new ModelErrorException("ERROR: CREATING TAG AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString());
             }
         }
         /// <summary>
@@ -48,15 +48,15 @@ namespace PhotoForum.Service.ModelService
                     if (selectedTag != null)
                     {
                         db.TAGs.Remove(selectedTag);
-                        if (db.SaveChanges() == 0) throw new ModelErrorException("ERROR: DELETING TAG AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString());
+                        if (db.SaveChanges() == 0) throw new Exception();
                     }
                     else throw new ModelErrorException("ERROR: TAG NOT FOUND");
                     return true;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw new ModelErrorException("ERROR: DELETING TAG AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString());
             }
         }
         /// <summary>

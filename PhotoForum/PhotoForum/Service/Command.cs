@@ -14,12 +14,14 @@ namespace PhotoForum.Service
     /// </summary>
     public class Command
     {
+        private static String success = "SUCCESS";
+        private static String failed = "FAILED";
         /// <summary>
         /// handle upload img of the user avatar when register
         /// </summary>
         /// <param name="user"></param>
         /// <param name="file"></param>
-        public void executeRegister(PHOTO_USER user, HttpPostedFileBase file)
+        public static String executeRegister(PHOTO_USER user, HttpPostedFileBase file)
         {
             UserService userService = new UserService();
             UploadService uploadService = new UploadService();
@@ -27,17 +29,20 @@ namespace PhotoForum.Service
             {
                 uploadService.upload(file);
                 userService.create(user);
+                return success;
             }
-            catch (ImgErrorException)
+            catch (ImgErrorException ex)
             {
                 uploadService.unDoUpload(file.FileName);
-                throw;
+                Console.WriteLine(ex.Message);
+                return failed;
             }
-            catch (ModelErrorException)
+            catch (ModelErrorException ex)
             {
                 uploadService.unDoUpload(file.FileName);
                 userService.deleteById(user.USERNAME);
-                throw;
+                Console.WriteLine(ex.Message);
+                return failed;
             }
         }
         /// <summary>
@@ -45,32 +50,41 @@ namespace PhotoForum.Service
         /// </summary>
         /// <param name="img"></param>
         /// <param name="file"></param>
-        public void executeUploadImg(IMG img, HttpPostedFileBase file, List<String> list)
+        public static String executeUploadImg(IMG img, HttpPostedFileBase file, List<String> tags)
         {
             PhotoService photoService = new PhotoService();
             UploadService uploadService = new UploadService();
             try
             {
+                //upload img
                 uploadService.upload(file);
+                //create img
                 photoService.create(img);
+                //get newest img
+                img.IMG_ID = photoService.findNewestImgOfUser(img.USERNAME);
+                //update tags
+                ? executeUpdateTags(img, tags) == failed : throw new ModelErrorException();
+                return success;
             }
-            catch (ImgErrorException)
+            catch (ImgErrorException ex)
             {
                 uploadService.unDoUpload(file.FileName);
-                throw;
+                Console.WriteLine(ex.Message);
+                return failed;
             }
-            catch (ModelErrorException)
+            catch (ModelErrorException ex)
             {
                 uploadService.unDoUpload(file.FileName);
                 photoService.deleteById(img.IMG_ID.ToString());
-                throw;
+                Console.WriteLine(ex.Message);
+                return failed;
             }
         }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="img"></param>
-        public void executeDeleteImg(IMG img)
+        public static String executeDeleteImg(IMG img)
         {
             PhotoService photoService = new PhotoService();
             UploadService uploadService = new UploadService();
@@ -78,11 +92,13 @@ namespace PhotoForum.Service
             {
                 photoService.deleteById(img.IMG_ID.ToString());
                 uploadService.unDoUpload(img.IMG_NAME);
+                return success;
             }
-            catch (ImgErrorException)
+            catch (ImgErrorException ex)
             {
                 photoService.create(img);
-                throw;
+                Console.WriteLine(ex.Message);
+                return failed;
             }
         }
         /// <summary>
@@ -90,13 +106,17 @@ namespace PhotoForum.Service
         /// </summary>
         /// <param name="img"></param>
         /// <param name="tags">String list</param>
-        public void executeUpdateTags(IMG img,List<String> tags)
+        public static String executeUpdateTags(IMG img,List<String> tags)
         {
             TagService tagService = new TagService();
             PhotoService photoService = new PhotoService();
-            List<TAG> list = img.TAGs.ToList();
+            List<TAG> oldTags = img.TAGs.ToList();
             try
             {
+                foreach(var i in img.TAGs)
+                {
+                    img.TAGs.Remove(i);
+                }
                 foreach(var i in tags)
                 {
                     TAG tag = tagService.findById(i);
@@ -104,7 +124,7 @@ namespace PhotoForum.Service
                     {
                         TAG newTag = new TAG()
                         {
-                            TAG_NAME = "i"
+                            TAG_NAME = i
                         };
                         tagService.create(newTag);
                         img.TAGs.Add(newTag);
@@ -116,19 +136,18 @@ namespace PhotoForum.Service
                     }
                 }
                 photoService.update(img);
+                return success;
             }
             //revert img tags
-            catch (Exception)
+            catch (Exception ex)
             {
-                foreach(var i in img.TAGs)
+                foreach(var i in oldTags)
                 {
-                    if(list.Contains(i) == false)
-                    {
-                        img.TAGs.Remove(i);
-                    }
+                    img.TAGs.Add(i);
                 }
                 photoService.update(img);
-                throw;
+                Console.WriteLine(ex.Message);
+                return failed;
             }
         }
     }
