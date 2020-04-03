@@ -4,6 +4,7 @@ using PhotoForum.Service.ActionService;
 using PhotoForum.Service.ModelService;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -13,8 +14,10 @@ namespace PhotoForum.Controllers
     public class HomeController : Controller
     {
         public ActionResult Index()
-        {            
-            ViewBag.Title = "Home Page";
+        {
+           
+
+            //ViewBag.Title = "Home Page";
 
             return View();
         }
@@ -23,16 +26,14 @@ namespace PhotoForum.Controllers
         {
             IMG img = new IMG()
             {
-                IMG_NAME = file.FileName,
-                UPLOAD_DATE = DateTime.Now,
-                STATUS = "testStatus",
-                USERNAME = "unitTest"
+                USERNAME = "testCommand",
+                STATUS = "public"
             };
             List<String> tags = new List<string>();
             tags.Add("tag1");
-            tags.Add("tag3");
-            tags.Add("tag4");
-            ViewBag.data = Command.executeUploadImg(img, file,tags);
+            tags.Add("tag5");
+
+            Command.executeUploadImg(img, file, tags);
             return View();
         }
     }

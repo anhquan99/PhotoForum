@@ -8,20 +8,21 @@ namespace PhotoForum.Service.ActionService
 {
     public class UploadService
     {
-        private static String desPath = AppDomain.CurrentDomain.BaseDirectory + @"img/";
+        private static String desPath = AppDomain.CurrentDomain.BaseDirectory + @"img";
         /// <summary>
         /// upload to the project img folder
         /// </summary>
         /// <param name="uploadFile"></param>
         /// <returns></returns>
-        public bool upload(HttpPostedFileBase uploadFile)
+        public bool upload(HttpPostedFileBase uploadFile, String ImgName)
         {
             try
             {
                 if (uploadFile.ContentLength > 1)
                 {
                     String fileName = Path.GetFileName(uploadFile.FileName);
-                    String path = Path.Combine(desPath, fileName);
+                    bool flag = Directory.Exists(desPath);
+                    String path = Path.Combine(desPath, ImgName);
                     uploadFile.SaveAs(path);
                 }
                 return true;
@@ -29,7 +30,8 @@ namespace PhotoForum.Service.ActionService
             catch (Exception)
             {
 
-                throw new CustomException.ImgErrorException("ERROR: UPLOAD IMG AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString());
+                //throw new CustomException.ImgErrorException("ERROR: UPLOAD IMG AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString());
+                throw;
             }
         }
         /// <summary>
@@ -41,7 +43,7 @@ namespace PhotoForum.Service.ActionService
         {
             try
             {
-                String file = desPath + fileName;
+                String file = desPath + @"\"  + fileName;
                 if (File.Exists(file))
                 {
                     File.Delete(file);
