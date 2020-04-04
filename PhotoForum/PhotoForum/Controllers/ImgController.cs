@@ -12,10 +12,13 @@ namespace PhotoForum.Controllers
     public class ImgController : Controller
     {
         // GET: Img
-        public ActionResult Index()
+        public ActionResult Index(int id)
         {
-            ViewBag.data = Session["username"];
-            return View();
+            PhotoService service = new PhotoService();
+            IMG img = service.findById(id.ToString());
+            var dir = Server.MapPath("/img");
+            var path = Path.Combine(dir, img.IMG_NAME);
+            return base.File(path, "image");
         }
     }
 }

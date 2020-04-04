@@ -66,27 +66,28 @@ namespace PhotoForum.Controllers.API
                 return null;
             }
         }
-        //[Route("login_with")]
-        //[HttpGet]
-        //public String loginWith()
-        //{
-        //    try
-        //    {
-        //        String username = HttpContext.Current.Session["username"].ToString();
-        //        Console.WriteLine(username);
-        //        //if (context.Session["username"] != null)
-        //        //{
-        //        //    return context.Session["username"].ToString();
-        //        //}
+        [Route("login_with")]
+        [HttpGet]
+        public String loginWith()
+        {
+            try
+            {
+                //String username = HttpContext.Current.Session["username"].ToString();
+                String username = Session.get();
+                Console.WriteLine(username);
+                //if (context.Session["username"] != null)
+                //{
+                //    return context.Session["username"].ToString();
+                //}
 
-        //        return null;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine(ex);
-        //        return null;
-        //    }
-        //}
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return null;
+            }
+        }
         [Route("login_with_form")]
         [HttpPost]
         //public String loginWithForm([FromBody] String username, [FromBody] String password)
