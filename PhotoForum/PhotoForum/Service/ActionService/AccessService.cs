@@ -20,7 +20,10 @@ namespace PhotoForum.Service.ActionService
         {
             try
             {
-                if (service.findByUsernameAndPassword(username, password) != null) return true;
+                if (service.findByUsernameAndPassword(username, password) != null)
+                {
+                    return true;
+                }
                 return false;
             }
             catch (Exception)
@@ -28,6 +31,9 @@ namespace PhotoForum.Service.ActionService
 
                 throw;
             }
+        }
+        public void logout()
+        {
         }
         /// <summary>
         /// check if user is admin or not

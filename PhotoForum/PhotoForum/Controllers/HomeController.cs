@@ -15,6 +15,8 @@ namespace PhotoForum.Controllers
     {
         public ActionResult Index()
         {
+            Session["username"] = "unitTest";
+            //HttpContextBase context = this.HttpContext;
             return View();
         }
         [HttpPost]

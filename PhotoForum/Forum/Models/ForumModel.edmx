@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="PHOTO_FORUMModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="FORUM_USER">
+          <Key>
+            <PropertyRef Name="USERNAME" />
+          </Key>
+          <Property Name="USERNAME" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="PASSWORD" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="EMAIL" Type="varchar" MaxLength="250" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LINKED_USER">
+          <Key>
+            <PropertyRef Name="USERNAME" />
+          </Key>
+          <Property Name="USERNAME" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="LINKED_USERNAME" Type="varchar" MaxLength="250" Nullable="false" />
+        </EntityType>
+        <EntityType Name="POST">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NAME" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="USERNAME" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="POST_TIME" Type="datetime" Nullable="false" />
+          <Property Name="CAPTION" Type="text" Nullable="false" />
+          <Property Name="LINKED_LINK" Type="varchar" MaxLength="250" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_LINKED_USER">
+          <End Role="FORUM_USER" Type="Self.FORUM_USER" Multiplicity="1" />
+          <End Role="LINKED_USER" Type="Self.LINKED_USER" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="FORUM_USER">
+              <PropertyRef Name="USERNAME" />
+            </Principal>
+            <Dependent Role="LINKED_USER">
+              <PropertyRef Name="USERNAME" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_POST_USER">
+          <End Role="FORUM_USER" Type="Self.FORUM_USER" Multiplicity="1" />
+          <End Role="POST" Type="Self.POST" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FORUM_USER">
+              <PropertyRef Name="USERNAME" />
+            </Principal>
+            <Dependent Role="POST">
+              <PropertyRef Name="USERNAME" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PHOTO_FORUMModelStoreContainer">
+          <EntitySet Name="FORUM_USER" EntityType="Self.FORUM_USER" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LINKED_USER" EntityType="Self.LINKED_USER" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="POST" EntityType="Self.POST" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_LINKED_USER" Association="Self.FK_LINKED_USER">
+            <End Role="FORUM_USER" EntitySet="FORUM_USER" />
+            <End Role="LINKED_USER" EntitySet="LINKED_USER" />
+          </AssociationSet>
+          <AssociationSet Name="FK_POST_USER" Association="Self.FK_POST_USER">
+            <End Role="FORUM_USER" EntitySet="FORUM_USER" />
+            <End Role="POST" EntitySet="POST" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PHOTO_FORUMModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="FORUM_USER">
+          <Key>
+            <PropertyRef Name="USERNAME" />
+          </Key>
+          <Property Name="USERNAME" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PASSWORD" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EMAIL" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="LINKED_USER" Relationship="Self.FK_LINKED_USER" FromRole="FORUM_USER" ToRole="LINKED_USER" />
+          <NavigationProperty Name="POSTs" Relationship="Self.FK_POST_USER" FromRole="FORUM_USER" ToRole="POST" />
+        </EntityType>
+        <EntityType Name="LINKED_USER">
+          <Key>
+            <PropertyRef Name="USERNAME" />
+          </Key>
+          <Property Name="USERNAME" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LINKED_USERNAME" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="FORUM_USER" Relationship="Self.FK_LINKED_USER" FromRole="LINKED_USER" ToRole="FORUM_USER" />
+        </EntityType>
+        <EntityType Name="POST">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NAME" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="USERNAME" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="POST_TIME" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CAPTION" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LINKED_LINK" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="FORUM_USER" Relationship="Self.FK_POST_USER" FromRole="POST" ToRole="FORUM_USER" />
+        </EntityType>
+        <Association Name="FK_LINKED_USER">
+          <End Role="FORUM_USER" Type="Self.FORUM_USER" Multiplicity="1" />
+          <End Role="LINKED_USER" Type="Self.LINKED_USER" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="FORUM_USER">
+              <PropertyRef Name="USERNAME" />
+            </Principal>
+            <Dependent Role="LINKED_USER">
+              <PropertyRef Name="USERNAME" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_POST_USER">
+          <End Role="FORUM_USER" Type="Self.FORUM_USER" Multiplicity="1" />
+          <End Role="POST" Type="Self.POST" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FORUM_USER">
+              <PropertyRef Name="USERNAME" />
+            </Principal>
+            <Dependent Role="POST">
+              <PropertyRef Name="USERNAME" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PHOTO_FORUMEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="FORUM_USER" EntityType="Self.FORUM_USER" />
+          <EntitySet Name="LINKED_USER" EntityType="Self.LINKED_USER" />
+          <EntitySet Name="POSTs" EntityType="Self.POST" />
+          <AssociationSet Name="FK_LINKED_USER" Association="Self.FK_LINKED_USER">
+            <End Role="FORUM_USER" EntitySet="FORUM_USER" />
+            <End Role="LINKED_USER" EntitySet="LINKED_USER" />
+          </AssociationSet>
+          <AssociationSet Name="FK_POST_USER" Association="Self.FK_POST_USER">
+            <End Role="FORUM_USER" EntitySet="FORUM_USER" />
+            <End Role="POST" EntitySet="POSTs" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PHOTO_FORUMModelStoreContainer" CdmEntityContainer="PHOTO_FORUMEntities">
+          <EntitySetMapping Name="FORUM_USER">
+            <EntityTypeMapping TypeName="PHOTO_FORUMModel.FORUM_USER">
+              <MappingFragment StoreEntitySet="FORUM_USER">
+                <ScalarProperty Name="USERNAME" ColumnName="USERNAME" />
+                <ScalarProperty Name="PASSWORD" ColumnName="PASSWORD" />
+                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LINKED_USER">
+            <EntityTypeMapping TypeName="PHOTO_FORUMModel.LINKED_USER">
+              <MappingFragment StoreEntitySet="LINKED_USER">
+                <ScalarProperty Name="USERNAME" ColumnName="USERNAME" />
+                <ScalarProperty Name="LINKED_USERNAME" ColumnName="LINKED_USERNAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="POSTs">
+            <EntityTypeMapping TypeName="PHOTO_FORUMModel.POST">
+              <MappingFragment StoreEntitySet="POST">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="USERNAME" ColumnName="USERNAME" />
+                <ScalarProperty Name="POST_TIME" ColumnName="POST_TIME" />
+                <ScalarProperty Name="CAPTION" ColumnName="CAPTION" />
+                <ScalarProperty Name="LINKED_LINK" ColumnName="LINKED_LINK" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

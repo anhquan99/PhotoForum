@@ -1,4 +1,5 @@
-﻿using PhotoForum.Models.DB;
+﻿using PhotoForum.Models;
+using PhotoForum.Models.DB;
 using PhotoForum.Models.DTO;
 using PhotoForum.Service.ActionService;
 using PhotoForum.Service.ModelService;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 
 namespace PhotoForum.Controllers.API
@@ -16,12 +18,12 @@ namespace PhotoForum.Controllers.API
     {
         [Route("link_account")]
         [HttpPost]
-        public bool linkAccount([FromBody] String username, [FromBody] String password)
+        public bool linkAccount([FromBody] User user)
         {
             try
             {
                 AccessService service = new AccessService();
-                return service.login(username, password) ? true : false;
+                return service.login(user.username, user.password) ? true : false;
             }
             catch (Exception ex)
             {
@@ -64,24 +66,27 @@ namespace PhotoForum.Controllers.API
                 return null;
             }
         }
-        [Route("login_with/{username}")]
-        [HttpGet]
-        public String loginWith([FromUri] String username)
-        {
-            try
-            {
-                if (System.Web.HttpContext.Current.Session["username"] != null)
-                {
-                    return username;
-                }
-                return null;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-                return null;
-            }
-        }
+        //[Route("login_with")]
+        //[HttpGet]
+        //public String loginWith()
+        //{
+        //    try
+        //    {
+        //        String username = HttpContext.Current.Session["username"].ToString();
+        //        Console.WriteLine(username);
+        //        //if (context.Session["username"] != null)
+        //        //{
+        //        //    return context.Session["username"].ToString();
+        //        //}
+
+        //        return null;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine(ex);
+        //        return null;
+        //    }
+        //}
         [Route("login_with_form")]
         [HttpPost]
         //public String loginWithForm([FromBody] String username, [FromBody] String password)
