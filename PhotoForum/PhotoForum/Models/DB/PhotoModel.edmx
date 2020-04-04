@@ -83,6 +83,10 @@
         <Function Name="FIND_IMG_WITH_TAG" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="TAG_NAME" Type="nvarchar" Mode="In" />
         </Function>
+        <Function Name="FIND_IMG_WITH_TAG_AND_USERNAME" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TAG_NAME" Type="varchar" Mode="In" />
+          <Parameter Name="USERNAME" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="SELECT_NEWEST_IMG" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="USERNAME" Type="nvarchar" Mode="In" />
         </Function>
@@ -171,6 +175,10 @@
           <FunctionImport Name="FIND_IMG_WITH_TAG" ReturnType="Collection(PHOTO_FORUMModel.FIND_IMG_WITH_TAG_Result)">
             <Parameter Name="TAG_NAME" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="FIND_IMG_WITH_TAG_AND_USERNAME" ReturnType="Collection(Int32)">
+            <Parameter Name="TAG_NAME" Mode="In" Type="String" />
+            <Parameter Name="USERNAME" Mode="In" Type="String" />
+          </FunctionImport>
           <FunctionImport Name="SELECT_NEWEST_IMG" ReturnType="Collection(PHOTO_FORUMModel.SELECT_NEWEST_IMG_Result)">
             <Parameter Name="USERNAME" Mode="In" Type="String" />
           </FunctionImport>
@@ -238,6 +246,7 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="FIND_IMG_WITH_TAG_AND_USERNAME" FunctionName="PHOTO_FORUMModel.Store.FIND_IMG_WITH_TAG_AND_USERNAME" />
           <FunctionImportMapping FunctionImportName="SELECT_NEWEST_IMG" FunctionName="PHOTO_FORUMModel.Store.SELECT_NEWEST_IMG">
             <ResultMapping>
               <ComplexTypeMapping TypeName="PHOTO_FORUMModel.SELECT_NEWEST_IMG_Result">

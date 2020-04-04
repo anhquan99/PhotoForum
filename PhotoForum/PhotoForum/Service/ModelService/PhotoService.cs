@@ -266,6 +266,54 @@ namespace PhotoForum.Service.ModelService
                 throw new ModelErrorException("ERROR: GETTING IMG BY TAG AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString(), ex);
             }
         }
-
+        /// <summary>
+        ///  find img with username
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        public List<IMG> findByUsername(String username)
+        {
+            try
+            {
+                using (PHOTO_FORUMEntities db = new PHOTO_FORUMEntities())
+                {
+                    List<IMG> list = (from p in db.IMGs
+                                      where p.USERNAME == username
+                                      orderby p.IMG_ID
+                                      select p).ToList();
+                    
+                    return list;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new ModelErrorException("ERROR: GETTING IMG BY TAG AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString(), ex);
+            }
+        }
+        /// <summary>
+        /// find img with tag and username
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        public List<int> findByTagAndUsername(String tag, String username)
+        {
+            try
+            {
+                using (PHOTO_FORUMEntities db = new PHOTO_FORUMEntities())
+                {
+                    List<int> list = new List<int>();
+                    foreach (var i in db.FIND_IMG_WITH_TAG_AND_USERNAME(tag, username))
+                    {
+                        list.Add(i.Value);
+                    }
+                    return list;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new ModelErrorException("ERROR: GETTING IMG BY TAG AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString(), ex);
+            }
+        }
     }
 }

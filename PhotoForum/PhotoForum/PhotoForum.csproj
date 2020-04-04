@@ -166,6 +166,7 @@
     <Compile Include="Controllers\API\ForumAPIController.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ImgController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="CustomException\ImgErrorException.cs" />
@@ -203,6 +204,7 @@
     <Compile Include="Models\DB\TAG.cs">
       <DependentUpon>PhotoModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DTO\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\ActionService\AccessService.cs" />
     <Compile Include="Service\Command.cs" />
@@ -279,10 +281,10 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Img\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\DataView\" />
     <Folder Include="Views\Admin\" />
     <Folder Include="Views\Authentication\" />
     <Folder Include="Views\User\" />
