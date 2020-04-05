@@ -42,6 +42,13 @@ namespace Forum.Service
         //        throw;
         //    }
         //}
+        /// <summary>
+        /// take form imfomation to login
+        /// return true if user exist
+        /// </summary>
+        /// <param name="username">photo username</param>
+        /// <param name="password">photo password</param>
+        /// <returns></returns>
         public bool loginWithForm(String username, String password)
         {
             try
@@ -55,21 +62,35 @@ namespace Forum.Service
                 throw;
             }
         }
-        public void linkUser(String username, UserDTO user)
+        /// <summary>
+        /// call api to create linked user
+        /// </summary>
+        /// <param name="username">forum username</param>
+        /// <param name="photoUSername">photo username</param>
+        /// <param name="photoPassword">photo passwords</param>
+        public bool linkUser(String username, String photoUSername, String photoPassword)
         {
             try
             {
+                UserDTO user = new UserDTO()
+                {
+                    username = photoUSername,
+                    password = photoPassword
+                };
                 APIService api = new APIService();
-                if (api.linkAcouunt(user.username, user.password))
+                if (api.linkAcouunt(user))
                 {
                     LinkedUserService linkService = new LinkedUserService();
-                    linkService.create(new Models.LINKED_USER()
+                    bool status = linkService.create(new Models.LINKED_USER()
                     {
                         USERNAME = username,
                         LINKED_USERNAME = user.username
 
                     });
+                    return status;
                 }
+                return false;
+
             }
             catch (Exception)
             {

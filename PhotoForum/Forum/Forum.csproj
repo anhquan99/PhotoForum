@@ -164,6 +164,7 @@
     <Compile Include="Service\ModelService\LinkedUserService.cs" />
     <Compile Include="Service\ModelService\PostService.cs" />
     <Compile Include="Service\ModelService\UserService.cs" />
+    <Compile Include="Service\PhotoService.cs" />
     <Compile Include="Service\TextService.cs" />
   </ItemGroup>
   <ItemGroup>

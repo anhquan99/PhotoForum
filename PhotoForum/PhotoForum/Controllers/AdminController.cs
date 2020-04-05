@@ -12,6 +12,7 @@ namespace PhotoForum.Controllers
         // GET: Admin
         public ActionResult Index()
         {
+            //Response.Cookies["username"].Expires = DateTime.Now.AddDays(-1);
             return View();
         }
     }

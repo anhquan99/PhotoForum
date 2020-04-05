@@ -11,22 +11,17 @@ namespace Forum.Controllers
     {
         public ActionResult Index()
         {
-            APIService service = new APIService();
-            //ViewBag.data = service.loginWithFormAsync("unitTest", "updated").Result;
-            //ViewBag.data = service.loginWithSessionAsync("unitTest";
-            //ViewBag.data = service.linkAcouuntAsync("unitTest", "123");
-            //ViewBag.data = service.get_photoAsync(9);\
+            //PhotoService service = new PhotoService();
             //ViewBag.data = service.getAllPhoto("unitTest");
-            //ViewBag.data = service.getPhotoByTag("unitTest","tag1");
-            //List<String> data = TextService.parseStringToListString(service.getPhotoByTag("unitTest", "tag1"));
+            //ViewBag.data = service.getPhotoByTag("unitTest", "tag1");
+            AccessService service = new AccessService();
+            ViewBag.data = service.loginWithForm("unitTest", "updated");
             return View();
         }
 
-        public ActionResult About(String username, String password)
+        public ActionResult About()
         {
 
-            ViewBag.username = username;
-            ViewBag.password = password;
             ViewBag.Message = "Your application description page.";
 
             return View();

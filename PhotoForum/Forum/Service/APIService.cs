@@ -69,7 +69,13 @@ namespace Forum.Service
 
         //        throw;
         //    }
-        //}
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public bool loginWithForm(String username, String password)
         {
             try
@@ -102,15 +108,15 @@ namespace Forum.Service
                 throw;
             }
         }
-        public bool linkAcouunt(String username, String password)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public bool linkAcouunt(UserDTO user)
         {
             try
             {
-                UserDTO user = new UserDTO()
-                {
-                    username = username,
-                    password = password
-                };
                 var json = JsonConvert.SerializeObject(user);
                 var data = new StringContent(json, Encoding.UTF8, "application/json");
                 String url = MvcApplication.APIUrl + "link_account";
@@ -132,6 +138,11 @@ namespace Forum.Service
                 throw;
             }
         }
+        /// <summary>
+        /// get photo by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public String getPhoto(int id)
         {
             try
@@ -160,7 +171,12 @@ namespace Forum.Service
                 throw;
             }
         }
-        public List<String> getAllPhoto(String username)
+        /// <summary>
+        /// get all photo of linked user
+        /// </summary>
+        /// <param name="username">photo username</param>
+        /// <returns></returns>
+        public String getAllPhoto(String username)
         {
             try
             {
@@ -175,7 +191,7 @@ namespace Forum.Service
                     if (result.IsSuccessStatusCode)
                     {
                         String myResult = result.Content.ReadAsStringAsync().Result;
-                        return TextService.parseStringToListString(myResult);
+                        return myResult;
                     }
                     return null;
 
@@ -188,15 +204,16 @@ namespace Forum.Service
                 throw;
             }
         }
-        public List<String> getPhotoByTag(String username, String tag)
+        /// <summary>
+        /// get photo of linked user by tag
+        /// </summary>
+        /// <param name="username">photo username</param>
+        /// <param name="tag">tag</param>
+        /// <returns></returns>
+        public String getPhotoByTag(UserDTO user)
         {
             try
             {
-                UserDTO user = new UserDTO()
-                {
-                    username = username,
-                    tag = tag
-                };
                 var json = JsonConvert.SerializeObject(user);
                 var data = new StringContent(json, Encoding.UTF8, "application/json");
                 String url = MvcApplication.APIUrl + "get_photo_by_tag";
@@ -207,7 +224,7 @@ namespace Forum.Service
                     if (response.Result.IsSuccessStatusCode)
                     {
                         String result = response.Result.Content.ReadAsStringAsync().Result;
-                        return TextService.parseStringToListString(result);
+                        return result;
                     }
                     return null;
                 }

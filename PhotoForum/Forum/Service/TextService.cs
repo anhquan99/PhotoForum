@@ -29,5 +29,21 @@ namespace Forum.Service
                 throw;
             }
         }
+        public static String parseStringToUrl(String text)
+        {
+            try
+            {
+                text = text.Trim('"');
+                text = text.Trim('[');
+                text = text.Trim(']');
+                text = text.Trim();
+                return text;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }
