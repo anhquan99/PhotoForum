@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewBag.Title = "ShowImg";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Show Photos</h2>
+<div class="row">
+    <table class="table table-striped w-full">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Username</th>
+                <th scope="col">Upload Date</th>
+                <th scope="col">Image Name</th>
+                <th scope="col">Status</th>
+                <th scope="col">Update</th>
+                <th scope="col">Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (ViewBag.PhotoList != null)
+            {
+                foreach (var item in ViewBag.PhotoList)
+                {
+                    <tr>
+                        <td>@item.IMG_ID</td>
+                        <td>@item.USERNAME</td>
+                        <td>@item.UPLOAD_DATE</td>
+                        <td>@item.IMG_NAME</td>
+                        <td>@item.STATUS</td>
+                        <td><a href="@Url.Action("UpdateImg", new { id = item.IMG_ID })">Update</a></td>
+                        <td><a href="#">Delete</a></td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>
+
+</div>
+

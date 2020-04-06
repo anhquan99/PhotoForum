@@ -31,6 +31,15 @@ namespace PhotoForum.Models.DB
         public virtual DbSet<PHOTO_USER> PHOTO_USER { get; set; }
         public virtual DbSet<TAG> TAGs { get; set; }
     
+        public virtual ObjectResult<SELECT_NEWEST_IMG_Result> SELECT_NEWEST_IMG(string uSERNAME)
+        {
+            var uSERNAMEParameter = uSERNAME != null ?
+                new ObjectParameter("USERNAME", uSERNAME) :
+                new ObjectParameter("USERNAME", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SELECT_NEWEST_IMG_Result>("SELECT_NEWEST_IMG", uSERNAMEParameter);
+        }
+    
         public virtual ObjectResult<FIND_IMG_WITH_TAG_Result> FIND_IMG_WITH_TAG(string tAG_NAME)
         {
             var tAG_NAMEParameter = tAG_NAME != null ?
@@ -40,13 +49,17 @@ namespace PhotoForum.Models.DB
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<FIND_IMG_WITH_TAG_Result>("FIND_IMG_WITH_TAG", tAG_NAMEParameter);
         }
     
-        public virtual ObjectResult<SELECT_NEWEST_IMG_Result> SELECT_NEWEST_IMG(string uSERNAME)
+        public virtual ObjectResult<Nullable<int>> FIND_IMG_WITH_TAG_AND_USERNAME(string tAG_NAME, string uSERNAME)
         {
+            var tAG_NAMEParameter = tAG_NAME != null ?
+                new ObjectParameter("TAG_NAME", tAG_NAME) :
+                new ObjectParameter("TAG_NAME", typeof(string));
+    
             var uSERNAMEParameter = uSERNAME != null ?
                 new ObjectParameter("USERNAME", uSERNAME) :
                 new ObjectParameter("USERNAME", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SELECT_NEWEST_IMG_Result>("SELECT_NEWEST_IMG", uSERNAMEParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("FIND_IMG_WITH_TAG_AND_USERNAME", tAG_NAMEParameter, uSERNAMEParameter);
         }
     }
 }

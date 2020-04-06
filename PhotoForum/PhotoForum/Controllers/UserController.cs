@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace PhotoForum.Controllers
 {
+    [Authorize(Roles = "Member,Admin")]
     public class UserController : Controller
     {
         // GET: User

@@ -1,0 +1,61 @@
+﻿
+@{
+    ViewBag.Title = "UpdateImg";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    PhotoForum.Models.DB.IMG img = null;
+    if (TempData["Img"] != null)
+    {
+        img = (PhotoForum.Models.DB.IMG)TempData["Img"];
+    }
+}
+<h2>Update Photo</h2>
+@if (img != null)
+{
+    <form action="@Url.Action("UpdateImgDB","Admin")" method="post">
+        <div class="form-group row">
+                <input type="hidden" name="IMG_ID" class="form-control" id="id" value="@img.IMG_ID">
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Username</label>
+            <div class="col-sm-10">
+                <input type="text" readonly class="form-control" name="USERNAME" placeholder="Username" value="@img.USERNAME">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Image Name</label>
+            <div class="col-sm-10">
+                <input type="text" readonly class="form-control" name="UPLOAD_DATE" id="Name" placeholder="Upload Date" value="@img.UPLOAD_DATE">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Image Name</label>
+            <div class="col-sm-10">
+                <input type="text" readonly class="form-control" name="IMG_NAME" id="Name" placeholder="Image Name" value="@img.IMG_NAME">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Status</label>
+            <div class="col-sm-10">
+                <select class="form-control" name="STATUS">
+                    <option value="Private" @if (string.Equals(img.STATUS, "Private")) { @Html.Raw("Selected") ; }>
+                        Private
+                    </option>
+                    <option value="Public" @if (string.Equals(img.STATUS, "Public")) { @Html.Raw("Selected") ; }>
+                        Public
+                    </option>
+                    <option value="Banned" @if (string.Equals(img.STATUS, "Banned")) { @Html.Raw("Selected") ; }>
+                        Banned
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-2">
+                <input type="submit" class="btn btn-primary" value="save" />
+            </div>
+        </div>
+
+    </form>
+}

@@ -15,6 +15,8 @@ namespace PhotoForum.Controllers
     {
         public ActionResult Index()
         {
+            PhotoService photoService = new PhotoService();
+            ViewBag.PhotoList = photoService.findAll();
             return View();
         }
         [HttpPost]
@@ -33,5 +35,12 @@ namespace PhotoForum.Controllers
             //Command.executeDeleteImg(30);
             return View();
         }
+
+        public ActionResult Logout()
+        {
+            Session.Clear();
+            return RedirectToAction("Index", "Home");
+        }
+        
     }
 }

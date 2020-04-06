@@ -1,27 +1,21 @@
-﻿@*@{
-    ViewBag.Title = "UploadFile";
+﻿@{
+    ViewBag.Title = "Home Page";
 }
 
-<h2>UploadFile</h2>
-@if (ViewBag.data != null)
-{
-    <p>@ViewBag.data</p>
-}
-@using (Html.BeginForm("Index", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
 
-    <div>
-        @Html.TextBox("file", "", new { type = "file" }) <br />
+<div class="row">
+    @if (ViewBag.PhotoList != null)
+    {
+        foreach (var item in ViewBag.PhotoList)
+        {
+            <div class="col-sm-2 my-3">
+                <div class="card" style="width: 18rem;">
+                    <a href=""><img class="card-img-top" src="@Url.Content("~/img/"+ item.IMG_NAME)" class="img-responsive" alt="Card image cap"></a>
 
-        <input type="submit" value="Upload" />
-
-        @ViewBag.Message
-
-    </div>
+                </div>
+            </div>
+        }
+    }
 
 
-}*@
-@foreach(var i in ViewBag.data)
-{
-    <p>@i.IMG_ID</p>
-}
+</div>

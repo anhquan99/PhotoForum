@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="PHOTO_FORUMModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="PHOTO_FORUMModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="IMG">
           <Key>
             <PropertyRef Name="IMG_ID" />
@@ -53,9 +53,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_TAG_IMG">
-          <End Role="IMG" Type="Self.IMG" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
+          <End Role="IMG" Type="Self.IMG" Multiplicity="1" />
           <End Role="TAG_IMG" Type="Self.TAG_IMG" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="IMG">
@@ -67,9 +65,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_TAG_TAG">
-          <End Role="TAG" Type="Self.TAG" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
+          <End Role="TAG" Type="Self.TAG" Multiplicity="1" />
           <End Role="TAG_IMG" Type="Self.TAG_IMG" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="TAG">
@@ -82,6 +78,10 @@
         </Association>
         <Function Name="FIND_IMG_WITH_TAG" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="TAG_NAME" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="FIND_IMG_WITH_TAG_AND_USERNAME" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TAG_NAME" Type="varchar" Mode="In" />
+          <Parameter Name="USERNAME" Type="varchar" Mode="In" />
         </Function>
         <Function Name="SELECT_NEWEST_IMG" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="USERNAME" Type="nvarchar" Mode="In" />
@@ -104,8 +104,7 @@
             <End Role="TAG_IMG" EntitySet="TAG_IMG" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="PHOTO_FORUMModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -168,23 +167,27 @@
             <End Role="IMG" EntitySet="IMGs" />
             <End Role="TAG" EntitySet="TAGs" />
           </AssociationSet>
-          <FunctionImport Name="FIND_IMG_WITH_TAG" ReturnType="Collection(PHOTO_FORUMModel.FIND_IMG_WITH_TAG_Result)">
-            <Parameter Name="TAG_NAME" Mode="In" Type="String" />
-          </FunctionImport>
           <FunctionImport Name="SELECT_NEWEST_IMG" ReturnType="Collection(PHOTO_FORUMModel.SELECT_NEWEST_IMG_Result)">
+          <Parameter Name="USERNAME" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="FIND_IMG_WITH_TAG" ReturnType="Collection(PHOTO_FORUMModel.FIND_IMG_WITH_TAG_Result)">
+          <Parameter Name="TAG_NAME" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="FIND_IMG_WITH_TAG_AND_USERNAME" ReturnType="Collection(Int32)">
+            <Parameter Name="TAG_NAME" Mode="In" Type="String" />
             <Parameter Name="USERNAME" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
-        <ComplexType Name="FIND_IMG_WITH_TAG_Result">
-          <Property Type="Int32" Name="IMG_ID" Nullable="false" />
-          <Property Type="String" Name="TAG_NAME" Nullable="false" MaxLength="250" />
-        </ComplexType>
         <ComplexType Name="SELECT_NEWEST_IMG_Result">
           <Property Type="Int32" Name="IMG_ID" Nullable="false" />
           <Property Type="String" Name="USERNAME" Nullable="false" MaxLength="250" />
           <Property Type="DateTime" Name="UPLOAD_DATE" Nullable="false" Precision="23" />
           <Property Type="String" Name="IMG_NAME" Nullable="false" MaxLength="250" />
           <Property Type="String" Name="STATUS" Nullable="false" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="FIND_IMG_WITH_TAG_Result">
+          <Property Type="Int32" Name="IMG_ID" Nullable="false" />
+          <Property Type="String" Name="TAG_NAME" Nullable="false" MaxLength="250" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -230,14 +233,6 @@
               <ScalarProperty Name="TAG_NAME" ColumnName="TAG_NAME" />
             </EndProperty>
           </AssociationSetMapping>
-          <FunctionImportMapping FunctionImportName="FIND_IMG_WITH_TAG" FunctionName="PHOTO_FORUMModel.Store.FIND_IMG_WITH_TAG">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="PHOTO_FORUMModel.FIND_IMG_WITH_TAG_Result">
-                <ScalarProperty Name="IMG_ID" ColumnName="IMG_ID" />
-                <ScalarProperty Name="TAG_NAME" ColumnName="TAG_NAME" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="SELECT_NEWEST_IMG" FunctionName="PHOTO_FORUMModel.Store.SELECT_NEWEST_IMG">
             <ResultMapping>
               <ComplexTypeMapping TypeName="PHOTO_FORUMModel.SELECT_NEWEST_IMG_Result">
@@ -249,6 +244,15 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="FIND_IMG_WITH_TAG" FunctionName="PHOTO_FORUMModel.Store.FIND_IMG_WITH_TAG">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PHOTO_FORUMModel.FIND_IMG_WITH_TAG_Result">
+                <ScalarProperty Name="IMG_ID" ColumnName="IMG_ID" />
+                <ScalarProperty Name="TAG_NAME" ColumnName="TAG_NAME" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="FIND_IMG_WITH_TAG_AND_USERNAME" FunctionName="PHOTO_FORUMModel.Store.FIND_IMG_WITH_TAG_AND_USERNAME" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
