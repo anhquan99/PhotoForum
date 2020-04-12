@@ -12,6 +12,7 @@
           <Property Name="USERNAME" Type="varchar" MaxLength="250" Nullable="false" />
           <Property Name="PASSWORD" Type="varchar" MaxLength="250" Nullable="false" />
           <Property Name="EMAIL" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="ROLE" Type="varchar" MaxLength="250" />
         </EntityType>
         <EntityType Name="LINKED_USER">
           <Key>
@@ -30,6 +31,7 @@
           <Property Name="POST_TIME" Type="datetime" Nullable="false" />
           <Property Name="CAPTION" Type="text" Nullable="false" />
           <Property Name="LINKED_LINK" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="STATUS" Type="varchar" MaxLength="250" />
         </EntityType>
         <Association Name="FK_LINKED_USER">
           <End Role="FORUM_USER" Type="Self.FORUM_USER" Multiplicity="1" />
@@ -80,6 +82,7 @@
           <Property Name="USERNAME" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="PASSWORD" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="EMAIL" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ROLE" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="LINKED_USER" Relationship="Self.FK_LINKED_USER" FromRole="FORUM_USER" ToRole="LINKED_USER" />
           <NavigationProperty Name="POSTs" Relationship="Self.FK_POST_USER" FromRole="FORUM_USER" ToRole="POST" />
         </EntityType>
@@ -101,6 +104,7 @@
           <Property Name="POST_TIME" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="CAPTION" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="LINKED_LINK" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="STATUS" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="FORUM_USER" Relationship="Self.FK_POST_USER" FromRole="POST" ToRole="FORUM_USER" />
         </EntityType>
         <Association Name="FK_LINKED_USER">
@@ -152,6 +156,7 @@
                 <ScalarProperty Name="USERNAME" ColumnName="USERNAME" />
                 <ScalarProperty Name="PASSWORD" ColumnName="PASSWORD" />
                 <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+                <ScalarProperty Name="ROLE" ColumnName="ROLE" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -172,6 +177,7 @@
                 <ScalarProperty Name="POST_TIME" ColumnName="POST_TIME" />
                 <ScalarProperty Name="CAPTION" ColumnName="CAPTION" />
                 <ScalarProperty Name="LINKED_LINK" ColumnName="LINKED_LINK" />
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

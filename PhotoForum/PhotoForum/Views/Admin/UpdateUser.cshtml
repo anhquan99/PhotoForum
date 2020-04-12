@@ -1,0 +1,65 @@
+﻿
+@{
+    ViewBag.Title = "UpdateUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    PhotoForum.Models.DB.PHOTO_USER user = null;
+    if (TempData["User"] != null)
+    {
+        user = (PhotoForum.Models.DB.PHOTO_USER)TempData["User"];
+    }
+}
+<h2>Update User</h2>
+@if (user != null)
+{
+    <form action="@Url.Action("UpdateUserDB","Admin")" method="post">
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Username</label>
+            <div class="col-sm-10">
+                <input type="hidden" name="PASSWORD" class="form-control" id="id" value="@user.PASSWORD">
+                <input type="text" readonly class="form-control" name="USERNAME" placeholder="Username" value="@user.USERNAME">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Email</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="EMAIL" id="Name" placeholder="Upload Date" value="@user.EMAIL">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Image</label>
+            <div class="col-sm-10">
+                <input type="text" readonly class="form-control" name="IMG" id="Name" placeholder="Image Name" value="@user.IMG">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Status</label>
+            <div class="col-sm-10">
+                <select class="form-control" name="STATUS">
+                    <option value="true" @if (user.STATUS == true) { @Html.Raw("Selected") ; }>
+                        Active
+                    </option>
+                    <option value="false" @if (user.STATUS == false) { @Html.Raw("Selected") ; }>
+                        Deactived
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Role</label>
+            <div class="col-sm-10">
+                <input type="text" readonly class="form-control" name="ROLE" id="Name" placeholder="Image Name" value="@user.ROLE">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-2">
+                <input type="submit" class="btn btn-primary" value="save" />
+            </div>
+        </div>
+
+    </form>
+}
+
+

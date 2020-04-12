@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Web;
 
 namespace Forum.Service
@@ -17,7 +16,7 @@ namespace Forum.Service
                 text = text.Trim(']');
                 text = text.Trim();
                 String[] array = text.Split(',');
-                for(int i = 0; i < array.Count(); i++)
+                for (int i = 0; i < array.Count(); i++)
                 {
                     array[i] = array[i].Trim('"');
                 }
@@ -44,6 +43,12 @@ namespace Forum.Service
 
                 throw;
             }
+        }
+        public static string parseCookie(String cookie)
+        {
+            cookie = cookie.Trim('/');
+            cookie = cookie.Trim('"');
+            return cookie;
         }
     }
 }

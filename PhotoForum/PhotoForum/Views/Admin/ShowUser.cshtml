@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewBag.Title = "ShowMember";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Show Users</h2>
+<div class="row">
+    <table class="table table-striped w-full">
+        <thead>
+            <tr>
+                <th scope="col">USERNAME</th>
+                <th scope="col">EMAIL</th>
+                <th scope="col">STATUS</th>
+                <th scope="col">ROLE</th>
+                <th scope="col">IMG</th>
+                <th scope="col">Update</th>
+                <th scope="col">Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (ViewBag.UserList != null)
+            {
+                foreach (var item in ViewBag.UserList)
+                {
+                    <tr>
+                        <td>@item.USERNAME</td>
+                        <td>@item.EMAIL</td>
+                        <td>@item.STATUS</td>
+                        <td>@item.ROLE</td>
+                        <td>@item.IMG</td>
+                        <td><a href="@Url.Action("UpdateUser", new { username = item.USERNAME})">Update</a></td>
+                        <td><a href="#">Delete</a></td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>
+
+</div>

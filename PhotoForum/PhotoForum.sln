@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.960
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoForum", "PhotoForum\PhotoForum.csproj", "{854218CB-B3CC-4F5F-A8F3-D038D51754EB}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Forum", "Forum\Forum.csproj", "{FCE63B2A-9155-465D-A599-6469CCC5EDF6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoForum", "PhotoForum\PhotoForum.csproj", "{854218CB-B3CC-4F5F-A8F3-D038D51754EB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{854218CB-B3CC-4F5F-A8F3-D038D51754EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{854218CB-B3CC-4F5F-A8F3-D038D51754EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{854218CB-B3CC-4F5F-A8F3-D038D51754EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{854218CB-B3CC-4F5F-A8F3-D038D51754EB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FCE63B2A-9155-465D-A599-6469CCC5EDF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FCE63B2A-9155-465D-A599-6469CCC5EDF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FCE63B2A-9155-465D-A599-6469CCC5EDF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FCE63B2A-9155-465D-A599-6469CCC5EDF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{854218CB-B3CC-4F5F-A8F3-D038D51754EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{854218CB-B3CC-4F5F-A8F3-D038D51754EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{854218CB-B3CC-4F5F-A8F3-D038D51754EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{854218CB-B3CC-4F5F-A8F3-D038D51754EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

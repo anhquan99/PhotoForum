@@ -1,0 +1,44 @@
+﻿
+@{
+    ViewBag.Title = "UpdateUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Forum.Models.FORUM_USER user = null;
+    if (TempData["User"] != null)
+    {
+        user = (Forum.Models.FORUM_USER)TempData["User"];
+    }
+}
+
+<h2>UpdateUser</h2>
+@if (user != null)
+{
+    <a href="@Url.Action("linkUser","User")">LINK TO PHOTO</a>
+    <form action="@Url.Action("UpdateUserDB", "User")" method="post">
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Username</label>
+            <div class="col-sm-10">
+                <input type="text" readonly class="form-control" name="USERNAME" placeholder="Username" value="@user.USERNAME">
+                <input type="hidden" class="form-control" name="ROLE" placeholder="Username" value="@user.ROLE">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Email</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="EMAIL" placeholder="Email" value="@user.EMAIL">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Password</label>
+            <div class="col-sm-10">
+                <input type="password" class="form-control" name="PASSWORD" placeholder="Password">
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-2">
+                <input type="submit" class="btn btn-primary" value="save" />
+            </div>
+        </div>
+
+    </form>
+}
+

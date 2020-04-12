@@ -47,6 +47,27 @@ namespace Forum.Service.ModelService
                 throw;
             }
         }
+        public bool ApproveById(string id)
+        {
+            try
+            {
+                using (PHOTO_FORUMEntities db = new PHOTO_FORUMEntities())
+                {
+                    int postId = int.Parse(id);
+                    var post = (from p in db.POSTs
+                                where p.ID == postId
+                                select p).SingleOrDefault();
+                    post.STATUS = "APPROVED";
+                    if (db.SaveChanges() == 0) return false;
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
 
         public List<POST> findAll()
         {
@@ -55,6 +76,43 @@ namespace Forum.Service.ModelService
                 using (PHOTO_FORUMEntities db = new PHOTO_FORUMEntities())
                 {
                     return (from p in db.POSTs
+                            orderby p.ID descending
+                            select p).ToList();
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public List<POST> findPending()
+        {
+            try
+            {
+                using (PHOTO_FORUMEntities db = new PHOTO_FORUMEntities())
+                {
+                    return (from p in db.POSTs
+                            where p.STATUS == "PENDING"
+                            orderby p.ID descending
+                            select p).ToList();
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public List<POST> findApproved()
+        {
+            try
+            {
+                using (PHOTO_FORUMEntities db = new PHOTO_FORUMEntities())
+                {
+                    return (from p in db.POSTs
+                            where p.STATUS == "APPROVED"
                             orderby p.ID descending
                             select p).ToList();
                 }

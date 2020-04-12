@@ -1,7 +1,7 @@
-﻿using Forum.Models.DTO;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Forum.Models.DTO;
 using System.Web;
 
 namespace Forum.Service
@@ -19,7 +19,7 @@ namespace Forum.Service
         {
             try
             {
-                
+
                 UserDTO user = new UserDTO()
                 {
                     username = username,

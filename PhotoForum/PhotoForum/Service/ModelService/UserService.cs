@@ -129,7 +129,7 @@ namespace PhotoForum.Service.ModelService
             }
             catch (Exception ex)
             {
-                throw new ModelErrorException("ERROR: DELETING USER AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString(), ex);
+                throw new ModelErrorException("ERROR: UPDATING USER AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString(), ex);
             }
         }
         /// <summary>

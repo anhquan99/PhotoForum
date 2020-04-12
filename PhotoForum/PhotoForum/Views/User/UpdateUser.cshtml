@@ -1,0 +1,128 @@
+﻿
+@{
+    ViewBag.Title = "UpdateUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    PhotoForum.Models.DB.PHOTO_USER user = null;
+    if (TempData["User"] != null)
+    {
+        user = (PhotoForum.Models.DB.PHOTO_USER)TempData["User"];
+    }
+}
+
+@model PhotoForum.Models.DB.IMG
+<style>
+    .btn-file {
+        position: relative;
+        overflow: hidden;
+    }
+
+        .btn-file input[type=file] {
+            position: absolute;
+            top: 0;
+            right: 0;
+            min-width: 100%;
+            min-height: 100%;
+            font-size: 100px;
+            text-align: right;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            outline: none;
+            background: white;
+            cursor: inherit;
+            display: block;
+        }
+
+    #img-upload {
+        width: 100%;
+    }
+</style>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(document).on('change', '.btn-file :file', function () {
+            var input = $(this),
+                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+            input.trigger('fileselect', [label]);
+        });
+
+        $('.btn-file :file').on('fileselect', function (event, label) {
+
+            var input = $(this).parents('.input-group').find(':text'),
+                log = label;
+
+            if (input.length) {
+                input.val(log);
+            } else {
+                if (log) alert(log);
+            }
+
+        });
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#img-upload').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#imgInp").change(function () {
+            readURL(this);
+        });
+    });
+</script>
+
+<h2>UpdateUser</h2>
+@if (ViewBag.data != null)
+{
+    <h3 style="color:red">@ViewBag.data</h3>
+}
+@if (user != null)
+{
+    <form action="@Url.Action("UpdateUser","User")" method="post" enctype="multipart/form-data">
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Username</label>
+            <div class="col-sm-10">
+                <input type="text" readonly class="form-control" name="USERNAME" placeholder="Username" value="@user.USERNAME">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Email</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="EMAIL" id="Name" placeholder="Upload Date" value="@user.EMAIL">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Image</label>
+            <div class="input-group col-sm-8">
+                <span class="input-group-btn">
+                    <span class="btn btn-default btn-file">
+                        Browse… <input type="file" name="img" id="imgInp">
+                    </span>
+                </span>
+                <img id='img-upload' class="col-sm-2" src="@Url.Content("~/img/"+ user.IMG)" />
+                <input type="text" class="form-control" readonly>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Username</label>
+            <div class="col-sm-10">
+                <input type="password" class="form-control" name="PASSWORD" placeholder="Password" value="@user.PASSWORD">
+                <input type="hidden" name="IMG" value="@user.IMG"/>
+                <input type="hidden" name="STATUS" id="Status" value="@user.STATUS">
+                <input type="hidden" name="ROLE" value="@user.ROLE">
+            </div>
+        </div>      
+
+        <div class="form-group row">
+            <div class="col-sm-2">
+                <input type="submit" class="btn btn-primary" value="save" />
+            </div>
+        </div>
+
+    </form>
+}

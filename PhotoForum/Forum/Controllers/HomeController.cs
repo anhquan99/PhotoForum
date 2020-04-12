@@ -1,4 +1,5 @@
 ﻿using Forum.Service;
+using Forum.Service.ModelService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,17 +12,14 @@ namespace Forum.Controllers
     {
         public ActionResult Index()
         {
-            //PhotoService service = new PhotoService();
-            //ViewBag.data = service.getAllPhoto("unitTest");
-            //ViewBag.data = service.getPhotoByTag("unitTest", "tag1");
-            AccessService service = new AccessService();
-            ViewBag.data = service.loginWithForm("unitTest", "updated");
+            PostService postService = new PostService();
+            ViewBag.PostList = postService.findApproved();
             return View();
+            
         }
 
         public ActionResult About()
         {
-
             ViewBag.Message = "Your application description page.";
 
             return View();

@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewBag.Title = "ShowPost";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>ShowPost</h2>
+<div class="row">
+    <table class="table table-striped w-full">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Username</th>
+                <th scope="col">Upload Date</th>
+                <th scope="col">Name</th>
+                <th scope="col">Status</th>
+                <th scope="col">Caption</th>
+                <th scope="col">Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (ViewBag.PostList != null)
+            {
+                foreach (var item in ViewBag.PostList)
+                {
+                    <tr>
+                        <td>@item.ID</td>
+                        <td>@item.USERNAME</td>
+                        <td>@item.POST_TIME</td>
+                        <td>@item.NAME</td>
+                        <td>@item.STATUS</td>
+                        <td>@item.CAPTION</td>
+                        <td><a href="@Url.Action("DeletePost","Admin", new { id = item.ID })">Delete</a></td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>
+
+</div>

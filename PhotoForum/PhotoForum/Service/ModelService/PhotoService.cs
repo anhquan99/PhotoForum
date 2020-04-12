@@ -70,9 +70,7 @@ namespace PhotoForum.Service.ModelService
             {
                 using (PHOTO_FORUMEntities db = new PHOTO_FORUMEntities())
                 {
-                    return (from p in db.IMGs
-                            where p.STATUS.ToLower() == "public"
-                            select p).ToList();
+                    return (from p in db.IMGs select p).ToList();
                 }
             }
             catch (Exception ex)
@@ -80,14 +78,14 @@ namespace PhotoForum.Service.ModelService
                 throw new ModelErrorException("ERROR: READING IMG AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString(), ex);
             }
         }
-        public List<IMG> findAllAdmin()
+
+        public List<IMG> findAllPublic()
         {
             try
             {
                 using (PHOTO_FORUMEntities db = new PHOTO_FORUMEntities())
                 {
-                    return (from p in db.IMGs
-                            select p).ToList();
+                    return (from p in db.IMGs where p.STATUS == "PUBLIC" select p).ToList();
                 }
             }
             catch (Exception ex)
@@ -273,37 +271,7 @@ namespace PhotoForum.Service.ModelService
                     foreach (var i in db.FIND_IMG_WITH_TAG(tag))
                     {
                         IMG img = this.findById(i.IMG_ID.ToString());
-                        if(img.STATUS == "public")
-                        {
-                            list.Add(img);
-                        }
-                        
-                    }
-                    return list;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new ModelErrorException("ERROR: GETTING IMG BY TAG AT TIME " + DateTime.Now.ToString() + " AT " + this.GetType().Name + "IN " + System.Reflection.MethodBase.GetCurrentMethod().ToString(), ex);
-            }
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="tag"></param>
-        /// <returns></returns>
-        public List<IMG> findByTagAdmin(String tag)
-        {
-            try
-            {
-                using (PHOTO_FORUMEntities db = new PHOTO_FORUMEntities())
-                {
-                    List<IMG> list = new List<IMG>();
-                    foreach (var i in db.FIND_IMG_WITH_TAG(tag))
-                    {
-                        IMG img = this.findById(i.IMG_ID.ToString());
                         list.Add(img);
-
                     }
                     return list;
                 }
@@ -326,7 +294,6 @@ namespace PhotoForum.Service.ModelService
                 {
                     List<IMG> list = (from p in db.IMGs
                                       where p.USERNAME == username
-                                      where p.STATUS.ToLower() != "banned "
                                       orderby p.IMG_ID
                                       select p).ToList();
                     
@@ -353,11 +320,7 @@ namespace PhotoForum.Service.ModelService
                     List<int> list = new List<int>();
                     foreach (var i in db.FIND_IMG_WITH_TAG_AND_USERNAME(tag, username))
                     {
-                        if(this.findById(i.ToString()).STATUS.ToLower() != "banned")
-                        {
-                            list.Add(i.Value);
-                        }
-                        
+                        list.Add(i.Value);
                     }
                     return list;
                 }

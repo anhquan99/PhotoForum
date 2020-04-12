@@ -15,23 +15,18 @@ namespace PhotoForum.Controllers
     {
         public ActionResult Index()
         {
+            PhotoService photoService = new PhotoService();
+            ViewBag.PhotoList = photoService.findAllPublic();
             return View();
         }
-        [HttpPost]
-        public ActionResult Index(HttpPostedFileBase file)
-        {
-            //IMG img = new IMG()
-            //{
-            //    USERNAME = "testCommand",
-            //    STATUS = "public"
-            //};
-            //List<String> tags = new List<string>();
-            //tags.Add("tag1");
-            //tags.Add("tag5");
 
-            //Command.executeUploadImg(img, file, tags);
-            //Command.executeDeleteImg(30);
+        [HttpGet]
+        public ActionResult search(String tag)
+        {
+            PhotoService photoService = new PhotoService();
+            ViewBag.PhotoList = photoService.findByTag(tag);
             return View();
         }
+        
     }
 }
