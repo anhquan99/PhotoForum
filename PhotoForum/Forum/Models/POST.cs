@@ -20,6 +20,7 @@ namespace Forum.Models
         public System.DateTime POST_TIME { get; set; }
         public string CAPTION { get; set; }
         public string LINKED_LINK { get; set; }
+        public string STATUS { get; set; }
     
         public virtual FORUM_USER FORUM_USER { get; set; }
     }

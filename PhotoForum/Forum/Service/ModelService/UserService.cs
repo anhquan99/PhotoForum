@@ -119,7 +119,7 @@ namespace Forum.Service.ModelService
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
     }

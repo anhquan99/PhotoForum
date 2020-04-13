@@ -1,9 +1,9 @@
-﻿using Forum.Models.DTO;
-using Forum.Service.ModelService;
+﻿using Forum.Service.ModelService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Forum.Models.DTO;
 
 namespace Forum.Service
 {
@@ -91,6 +91,20 @@ namespace Forum.Service
                 }
                 return false;
 
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public bool checkAdmin(String username)
+        {
+            try
+            {
+                var user = service.findById(username);
+                if (user.ROLE == "ADMIN") return true;
+                return false;
             }
             catch (Exception)
             {

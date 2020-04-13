@@ -91,5 +91,23 @@ namespace Forum.Service.ModelService
             }
 
         }
+        public LINKED_USER findByLinkedName(String name)
+        {
+            try
+            {
+                using (PHOTO_FORUMEntities db = new PHOTO_FORUMEntities())
+                {
+                    var selectedUser = (from p in db.LINKED_USER
+                                        where p.LINKED_USERNAME == name
+                                        select p).SingleOrDefault();
+                    return selectedUser;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

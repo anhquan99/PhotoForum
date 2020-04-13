@@ -23,6 +23,7 @@ namespace Forum.Models
         public string USERNAME { get; set; }
         public string PASSWORD { get; set; }
         public string EMAIL { get; set; }
+        public string ROLE { get; set; }
     
         public virtual LINKED_USER LINKED_USER { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -53,9 +53,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_TAG_IMG">
-          <End Role="IMG" Type="Self.IMG" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
+          <End Role="IMG" Type="Self.IMG" Multiplicity="1" />
           <End Role="TAG_IMG" Type="Self.TAG_IMG" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="IMG">
@@ -67,9 +65,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_TAG_TAG">
-          <End Role="TAG" Type="Self.TAG" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
+          <End Role="TAG" Type="Self.TAG" Multiplicity="1" />
           <End Role="TAG_IMG" Type="Self.TAG_IMG" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="TAG">
@@ -87,6 +83,7 @@
           <Parameter Name="TAG_NAME" Type="varchar" Mode="In" />
           <Parameter Name="USERNAME" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
         <Function Name="SELECT_NEWEST_IMG" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="USERNAME" Type="nvarchar" Mode="In" />
         </Function>

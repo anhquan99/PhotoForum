@@ -1,5 +1,4 @@
-﻿using PhotoForum.Models;
-using PhotoForum.Models.DB;
+﻿using PhotoForum.Models.DB;
 using PhotoForum.Models.DTO;
 using PhotoForum.Service.ActionService;
 using PhotoForum.Service.ModelService;
@@ -8,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Web;
 using System.Web.Http;
 
 namespace PhotoForum.Controllers.API
@@ -22,8 +20,8 @@ namespace PhotoForum.Controllers.API
         {
             try
             {
-                AccessService service = new AccessService();
-                return service.login(user.username, user.password) ? true : false;
+                if (new AccessService().login(user.username, user.password)) return true;
+                return false;
             }
             catch (Exception ex)
             {
@@ -66,30 +64,12 @@ namespace PhotoForum.Controllers.API
                 return null;
             }
         }
-        //[Route("login_with")]
-        //[HttpPost]
-        //public String loginWith([FromBody] User user)
-        //{
-        //    try
-        //    {
-        //        //String username = HttpContext.Current.Session["username"].ToString();
-        //        //if (context.Session["username"] != null)
-        //        //{
-        //        //    return context.Session["username"].ToString();
-        //        //}
-        //        if(user.username != null)
-        //        {
-        //            return user.username;
-        //        }
-        //        return null;
-                
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine(ex);
-        //        return null;
-        //    }
-        //}
+        [Route("login_with")]
+        [HttpGet]
+        public String loginWith()
+        {
+            return "PhotoUsername";
+        }
         [Route("login_with_form")]
         [HttpPost]
         //public String loginWithForm([FromBody] String username, [FromBody] String password)
